@@ -156,9 +156,9 @@ class fid_pytorch():
         np_file = np.array(np_file)
         plt.figure()
         plt.plot(np_file[0, :], np_file[1, :])
-        plt.grid(b=True, which='major', color='#666666', linestyle='--')
+        plt.grid(visible=True, which='major', color='#666666', linestyle='--')
         plt.minorticks_on()
-        plt.grid(b=True, which='minor', color='#999999', linestyle='--', alpha=0.2)
+        plt.grid(visible=True, which='minor', color='#999999', linestyle='--', alpha=0.2)
         plt.savefig(self.path_to_save + "/plot_fid", dpi=600)
         plt.close()
 

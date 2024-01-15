@@ -3,7 +3,7 @@ import models.models as models
 import dataloaders.dataloaders as dataloaders
 import utils.utils as utils
 import config
-
+from tqdm import tqdm
 
 #--- read options ---#
 opt = config.read_arguments(train=False)
@@ -20,7 +20,7 @@ model = models.put_on_multi_gpus(model, opt)
 model.eval()
 
 #--- iterate over validation set ---#
-for i, data_i in enumerate(dataloader_val):
+for i, data_i in enumerate(tqdm(dataloader_val)):
     _, label = models.preprocess_input(opt, data_i)
     generated = model(None, label, "generate", None)
     image_saver(label, generated, data_i["name"])

@@ -7,6 +7,7 @@ import dataloaders.dataloaders as dataloaders
 import utils.utils as utils
 from utils.fid_scores import fid_pytorch
 import config
+from tqdm import tqdm
 
 
 #--- read options ---#
@@ -32,7 +33,8 @@ optimizerD = torch.optim.Adam(model.module.netD.parameters(), lr=opt.lr_d, betas
 already_started = False
 start_epoch, start_iter = utils.get_start_iters(opt.loaded_latest_iter, len(dataloader))
 for epoch in range(start_epoch, opt.num_epochs):
-    for i, data_i in enumerate(dataloader):
+    print(f"Epoch {epoch}")
+    for i, data_i in enumerate(tqdm(dataloader)):
         if not already_started and i < start_iter:
             continue
         already_started = True
