@@ -1,4 +1,5 @@
 import argparse
+from email.policy import default
 import pickle
 import os
 import utils.utils as utils
@@ -68,6 +69,10 @@ def add_all_arguments(parser, train):
         parser.add_argument('--no_balancing_inloss', action='store_true', default=False, help='if specified, do *not* use class balancing in the loss function')
         parser.add_argument('--no_labelmix', action='store_true', default=False, help='if specified, do *not* use LabelMix')
         parser.add_argument('--lambda_labelmix', type=float, default=10.0, help='weight for LabelMix regularization')
+        parser.add_argument('--load_size', type=int, default=256, help="Size (resolution) in pixels for loading the images to the model. Side length")
+        parser.add_argument('--crop_size', type=int, default=256, help="Size (resolution) in pixels for the crop size . Side length")
+        # useful to overfit a small set of the data and debug code
+        parser.add_argument('--dataset_size', type=int, default=-1, help="How many images from the dataset to use. -1 means all the data")
     else:
         parser.add_argument('--results_dir', type=str, default='./results/', help='saves testing results here.')
         parser.add_argument('--ckpt_iter', type=str, default='best', help='which epoch to load to evaluate a model')

@@ -1,3 +1,4 @@
+from email.mime import image
 import random
 import torch
 from torchvision import transforms as TR
@@ -9,16 +10,17 @@ import numpy as np
 class Ade20kDataset(torch.utils.data.Dataset):
     def __init__(self, opt, for_metrics):
         if opt.phase == "test" or for_metrics:
-            opt.load_size = 256
+            opt.load_size = opt.load_size
         else:
-            opt.load_size = 286
-        opt.crop_size = 256
+            opt.load_size = opt.load_size
+        opt.crop_size = opt.crop_size
         opt.label_nc = 150
         opt.contain_dontcare_label = True
         opt.semantic_nc = 151 # label_nc + unknown
         opt.cache_filelist_read = False
         opt.cache_filelist_write = False
         opt.aspect_ratio = 1.0
+        opt.dataset_size = opt.dataset_size
 
         self.opt = opt
         self.for_metrics = for_metrics
@@ -44,6 +46,10 @@ class Ade20kDataset(torch.utils.data.Dataset):
         lab_list = [filename for filename in lab_list if ".png" in filename or ".jpg" in filename]
         images = sorted(img_list)
         labels = sorted(lab_list)
+        if self.opt.dataset_size > 0:
+            # only take the first n images
+            images = images[:self.opt.dataset_size]
+            labels = labels[:self.opt.dataset_size]
         assert len(images)  == len(labels), "different len of images and labels %s - %s" % (len(images), len(labels))
         for i in range(len(images)):
             assert os.path.splitext(images[i])[0] == os.path.splitext(labels[i])[0], '%s and %s are not matching' % (images[i], labels[i])
