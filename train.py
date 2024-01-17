@@ -32,6 +32,8 @@ optimizerD = torch.optim.Adam(model.module.netD.parameters(), lr=opt.lr_d, betas
 #--- the training loop ---#
 already_started = False
 start_epoch, start_iter = utils.get_start_iters(opt.loaded_latest_iter, len(dataloader))
+print("Start epoch ", start_epoch)
+print("NUm epoch ", opt.num_epochs)
 for epoch in range(start_epoch, opt.num_epochs):
     print(f"Epoch {epoch}")
     for i, data_i in enumerate(tqdm(dataloader)):
@@ -54,7 +56,7 @@ for epoch in range(start_epoch, opt.num_epochs):
         loss_D, losses_D_list = loss_D.mean(), [loss.mean() if loss is not None else None for loss in losses_D_list]
         loss_D.backward()
         optimizerD.step()
-        
+
         #--- stats update ---#
         if not opt.no_EMA:
             utils.update_EMA(model, cur_iter, dataloader, opt)
